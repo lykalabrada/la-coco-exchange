@@ -74,11 +74,12 @@ main {
   width: 40px;
   margin: 20px auto;
   cursor: pointer;
+  border: 1px solid #b26ec7;
+  border-radius: 100%;
 }
 
 .switch-img:hover {
-  border: 1px solid #f0f8ff;
-  border-radius: 4px;
+  box-shadow: 0px 0px 4px 1px  #d0a8dd;
 }
 
 .result {
