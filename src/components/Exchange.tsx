@@ -17,18 +17,12 @@ const Exchange = () => {
     const getCoinPrices = useCallback(async () => {
         try {
             const { from, to } = selectedPair
-            const coinGeckoBaseURL:string = 'https://api.coingecko.com/api/v3/coins'
-            const queryParams:string = 'localization=false&tickers=false&community_data=false&developer_data=false&sparkline=false'
+            const coinGeckoBaseURL:string = 'https://api.coingecko.com/api/v3/simple/price'
             
-            // Fetch latest coin price for "From" currency
-            const resFrom = await fetch(`${coinGeckoBaseURL}/${from.id}?${queryParams}`)
-            const dataFrom = await resFrom.json()
-            const fromValueInBTC = dataFrom.market_data.current_price.btc
-
-            // Fetch latest coin price for "To" currency
-            const resTo = await fetch(`${coinGeckoBaseURL}/${to.id}?${queryParams}`)
-            const dataTo = await resTo.json()
-            const toValueInBTC = dataTo.market_data.current_price.btc
+            const res = await fetch(`${coinGeckoBaseURL}?ids=${from.id},${to.id}&vs_currencies=btc`)
+            const data = await res.json()
+            const fromValueInBTC = data[from.id].btc
+            const toValueInBTC = data[to.id].btc
 
             const fromCurrencyPrice = Number((fromValueInBTC / toValueInBTC).toFixed(8))
             const toCurrencyPrice = Number((toValueInBTC / fromValueInBTC).toFixed(8))
@@ -37,13 +31,13 @@ const Exchange = () => {
             setError('Ooops. Something went wrong. Please contact support.')
             console.log('Error: ', (error as any).message)
         }
-    }, [])
+    }, [selectedPair])
 
     useEffect(() => {
         const numAmount = Number(amount)
         if (isNaN(numAmount) || numAmount <= 0) {
             setError('Amount should be a number and greater than 0.')
-        } else {
+        } else {     
             const totalValue = Number((coinPrices.fromCurrency * (numAmount)).toFixed(8))
             setResult({ convertedAmount: numAmount, totalValue})
             setError('')
