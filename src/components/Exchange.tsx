@@ -75,7 +75,7 @@ const Exchange = () => {
 
     return (
         <main>
-            <div>
+            <div data-testid='convert-title'>
                 <h3>Convert {selectedPair.from.symbol} to {selectedPair.to.symbol}</h3>
             </div>
             <div className='form'>
@@ -92,9 +92,10 @@ const Exchange = () => {
                                 event.preventDefault()
                             }
                         }}
+                        data-testid='amount'
                     />
                 </div>
-                <div className='form--detail'>
+                <div className='form--detail' data-testid='from-currency'>
                     <span>From</span>
                     <SelectCoin
                         name='from'
@@ -103,10 +104,10 @@ const Exchange = () => {
                         handleOnSelect={onSelect} 
                     />
                 </div>
-                <div className='form--detail'>
+                <div className='form--detail' data-testid='switch-icon'>
                     <img src='/exchange.png' className='switch-img' alt='Swap Currencies' title='Swap Currencies' onClick={onSwapCurrencies} />
                 </div>
-                <div className='form--detail'>
+                <div className='form--detail' data-testid='to-currency'>
                     <span>To</span>
                     <SelectCoin 
                         name='to'
@@ -116,8 +117,8 @@ const Exchange = () => {
                     />
                 </div>  
             </div>
-            {error && <div className='error'>{error}</div>}
-            <div className='result'>
+            {error && <div className='error' data-testid='error'>{error}</div>}
+            <div className='result' data-testid='result'>
                 <div style={{fontSize: '1rem'}}>{result.convertedAmount} {selectedPair.from.symbol} = </div>
                 <div style={{fontSize: '1.75rem'}}>{result.totalValue} {selectedPair.to.symbol}</div>
 
